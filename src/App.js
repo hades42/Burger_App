@@ -1,10 +1,11 @@
-import logo from './logo.svg';
-
-
+import Layout from "./Components/Layout/Layout"
+import BurgerBuider from "./Container/BurgurBuilder/BurgerBuilder"
 function App() {
   return (
-    <div className="App">
-     
+    <div>
+      <Layout>
+        <BurgerBuider></BurgerBuider>
+      </Layout>
     </div>
   );
 }

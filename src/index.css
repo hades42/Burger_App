@@ -1,5 +1,8 @@
 @import-normalize; /* bring in normalize.css styles */
 
+*{
+  box-sizing: border-box;
+}
 /* rest of app styles */
 body {
   margin: 0;
