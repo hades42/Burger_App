@@ -1,5 +1,5 @@
 import React from "react";
-
+import {withRouter} from "react-router-dom";
 import styles from "./Burger.module.css";
 import BurgerIngredient from "./Ingredients/Ingredient";
  
@@ -10,6 +10,7 @@ let hashCode = (s)=> {
   }, 0);
 };
 const burger = (props) => {
+  // console.log(props)
   let arr = [];
   Object.entries(props.ingredient).forEach(
     (ingredient, index) => {
@@ -36,4 +37,4 @@ const burger = (props) => {
   );
 };
 
-export default burger;
+export default withRouter(burger);
