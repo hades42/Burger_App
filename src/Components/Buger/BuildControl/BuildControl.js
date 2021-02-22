@@ -8,39 +8,48 @@ const controls = [
   { label: "Meat", type: "meat" },
 ];
 
-const BuildControls = (props) => {
-  return (
-    <div className={styles.BuildControls}>
-      <p>
-        Current Price: <strong>{props.totalPrice.toFixed(2)}</strong>
-      </p>
-      {controls.map((ctrl) => {
-        return (
-          <Control
-            key={ctrl.label}
-            label={ctrl.label}
-            addIngredient={() => props.ingredientAdd(ctrl.type)}
-            removeIngredient={() => props.ingredientRemove(ctrl.type)}
-            allowDisable={props.checkDisable[ctrl.type]}
-          ></Control>
-        );
-      })}
-      <button
-        className={styles.ResetBtn}
-        disabled={!props.resetable}
-        onClick={props.reseting}
-      >
-        Reset Burger
-      </button>
-      <button
-        className={styles.OrderButton}
-        disabled={!props.purchasable}
-        onClick={props.purchasing}
-      >
-        ORDER NOW
-      </button>
-    </div>
-  );
-};
+class BuildControls extends React.Component {
+
+
+  componentDidMount(){
+    this.props.updatePurchasable(this.props.ingredient);
+    this.props.resetableFunc(this.props.ingredient);
+  }
+
+  render() {
+    return (
+      <div className={styles.BuildControls}>
+        <p>
+          Current Price: <strong>{this.props.totalPrice.toFixed(2)}</strong>
+        </p>
+        {controls.map((ctrl) => {
+          return (
+            <Control
+              key={ctrl.label}
+              label={ctrl.label}
+              addIngredient={() => this.props.ingredientAdd(ctrl.type)}
+              removeIngredient={() => this.props.ingredientRemove(ctrl.type)}
+              allowDisable={this.props.checkDisable[ctrl.type]}
+            ></Control>
+          );
+        })}
+        <button
+          className={styles.ResetBtn}
+          disabled={!this.props.resetable}
+          onClick={this.props.reseting}
+        >
+          Reset Burger
+        </button>
+        <button
+          className={styles.OrderButton}
+          disabled={!this.props.purchasable}
+          onClick={this.props.purchasing}
+        >
+          ORDER NOW
+        </button>
+      </div>
+    );
+  }
+}
 
 export default BuildControls;

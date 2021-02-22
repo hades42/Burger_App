@@ -5,7 +5,7 @@ import Btn from "../../UI/Button/Button";
 class OrderSummary extends React.Component {
 
   componentDidUpdate(){
-    console.log("Component Did update")
+    // console.log("Component Did update")
   }
 
   render() {
