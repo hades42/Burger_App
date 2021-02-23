@@ -136,34 +136,14 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   purchaseContinue = () => {
-    // alert("Continue Buying!");
-    // this.setState({ loading: true });
-    // const order = {
-    //   ingredient: this.state.ingredient,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: "Van Nguyen",
-    //     address: {
-    //       street: "40 Renwick hihi",
-    //       zipCode: "2204",
-    //     },
-    //     email: "Ahihi@gmail.com",
-    //   },
-    // };
 
-    // axios
-    //   .post("/orders.json", order)
-    //   .then((res) => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   })
-    //   .catch((err) => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   });
     const queryParams = [];
     // console.log(this.state.ingredient);
     for(let [key,val] of Object.entries(this.state.ingredient)){
       queryParams.push(encodeURIComponent(key)+ "=" + encodeURIComponent(val));
     }
+    // Becuase the INGREDIENT_PRICE is only available in the BurgerBuilder so we have to pass the value of the total price to the checkout component through out the query statement in the URL 
+    queryParams.push("price=" + this.state.totalPrice);
     const queryString = queryParams.join("&");
     this.props.history.push({
       pathname: "/checkout",
