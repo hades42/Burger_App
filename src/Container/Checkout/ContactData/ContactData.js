@@ -15,6 +15,11 @@ class ContactData extends Component {
           placeholder: "Your name",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -23,14 +28,26 @@ class ContactData extends Component {
           placeholder: "Street",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: "input",
         elementConfig: {
-          type: "text",
+          type: "number",
           placeholder: "Zip Code",
         },
         value: "",
+        validation: {
+          required: true,
+          minLength: 4,
+          maxLength: 4,
+        },
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -39,6 +56,11 @@ class ContactData extends Component {
           placeholder: "Your email",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -49,8 +71,13 @@ class ContactData extends Component {
           ],
         },
         value: "fastest",
+        validation: {
+          required: false,
+        },
+        valid: true,
       },
     },
+    formIsValid: false,
     loading: false,
   };
 
@@ -92,11 +119,40 @@ class ContactData extends Component {
     };
     //// We change the value attribute of the object
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
     //// We put the clone value attribute to the clone orderForm
     updatingForm[inputIdentifier] = updatedFormElement;
     //// We put the clone orderForm to the actually form in the state object.
-    this.setState({ orderFrom: updatingForm });
+    
+    /// Check everything is valid
+    let formIsValid = true;
+    for(let inputId in updatingForm){
+        formIsValid = updatingForm[inputId].valid && formIsValid;
+    }
+    console.log(formIsValid);
+    this.setState({ orderFrom: updatingForm, formIsValid: formIsValid });
   };
+
+  checkValidity(value, rules) {
+    let isValid = true;
+    //// Basically, if the required is true, we have to make sure that the value in the input field can not be space
+    if (rules.required) {
+      isValid = value.trim() !== "" && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    return isValid;
+  }
+
   render() {
     const formElementsArray = [];
     for (let key in this.state.orderFrom) {
@@ -118,11 +174,13 @@ class ContactData extends Component {
               elementType={el.config.elementType}
               elementConfig={el.config.elementConfig}
               value={el.config.value}
+              invalid={!el.config.valid}
               changed={(event) => this.inputChangedHandler(event, el.id)}
+              touched={el.config.touched}
             ></Input>
           ))}
 
-          <Button btnType="Success">Order</Button>
+          <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
         </form>
       );
     }
